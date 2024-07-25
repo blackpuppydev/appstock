@@ -13,6 +13,7 @@ import com.blackpuppydev.testcodemobile.adapter.ProductAdapter
 import com.blackpuppydev.testcodemobile.api.repository.ProductRepository
 import com.blackpuppydev.testcodemobile.api.response.Product
 import com.blackpuppydev.testcodemobile.databinding.ActivityHomeBinding
+import com.blackpuppydev.testcodemobile.dialog.LoadingDialog
 
 class HomeActivity : AppCompatActivity() {
 
@@ -20,14 +21,19 @@ class HomeActivity : AppCompatActivity() {
     private var allProduct:ArrayList<Product>? = null
     private var filterDropDownProduct: ArrayList<Product>? = arrayListOf()
 
+    private var dialog:LoadingDialog? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
 
+        dialog = LoadingDialog(this@HomeActivity)
+        dialog!!.show()
         val dropdownAdapter = ArrayAdapter(this@HomeActivity,android.R.layout.simple_spinner_dropdown_item,getListDropdown())
         ProductRepository.newInstance().getProductItem { products ->
+            dialog!!.dismiss()
             allProduct = products
             binding!!.listItem.apply {
                 layoutManager = GridLayoutManager(context,1)

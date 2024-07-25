@@ -12,6 +12,7 @@
     <color name="main">#FA6E52</color>
     <color name="secondary">#FF9800</color>
     <color name="success">#10BD67</color>
+    <color name="main_edit">#FFEFED</color>
 
 
 </resources>
