@@ -9,7 +9,7 @@ import java.util.regex.Pattern
 
 class LoginViewModel : ViewModel() {
 
-    private var appPreference = AppPreference.getInstance()
+
 
     fun showDialog(context: Context,text:String){
         object : StandardDialog(context){
@@ -20,11 +20,6 @@ class LoginViewModel : ViewModel() {
     }
 
 
-    fun setPreference(context: Context, username:String, password:String){
-        appPreference.setSharedPreference(context)
-        appPreference.setUsername(username)
-        appPreference.setPassword(password)
-    }
 
 
     fun validateMail(email: String?): Boolean {
@@ -37,8 +32,6 @@ class LoginViewModel : ViewModel() {
         return password.length >= 8
     }
 
-    fun checkLogin():Boolean{
-        return !appPreference?.getUsername().isNullOrEmpty() && !appPreference?.getPassword().isNullOrEmpty()
-    }
+
 
 }

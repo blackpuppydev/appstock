@@ -1,5 +1,6 @@
 package com.blackpuppydev.testcodemobile.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,15 +18,17 @@ class LoginActivity : AppCompatActivity() {
 
     private var binding:ActivityLoginBinding? = null
     private var viewModel:LoginViewModel? = null
+    private var appPreference = AppPreference.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
 
+        appPreference.setSharedPreference(this@LoginActivity)
         viewModel = ViewModelProvider(this@LoginActivity)[LoginViewModel::class.java]
 
-        if (viewModel!!.checkLogin()){
+        if (checkLogin()){
             startActivity(Intent(this@LoginActivity,HomeActivity::class.java))
         }
 
@@ -36,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
                     && editMail.text.isNotBlank() && editPassword.text.isNotBlank()){
 
                     if (viewModel!!.validateMail(editMail.text.toString()) && viewModel!!.checkPassword(editPassword.text.toString())){
-                        viewModel!!.setPreference(applicationContext,editMail.text.toString(),editPassword.text.toString())
+                        setPreference(editMail.text.toString(),editPassword.text.toString())
 
                         startActivity(Intent(this@LoginActivity,HomeActivity::class.java))
 
@@ -45,6 +48,15 @@ class LoginActivity : AppCompatActivity() {
                 } else viewModel!!.showDialog(this@LoginActivity,"Email or password incorrect")
             }
         }
+    }
+
+    fun setPreference(username:String, password:String){
+        appPreference.setUsername(username)
+        appPreference.setPassword(password)
+    }
+
+    fun checkLogin():Boolean{
+        return !appPreference?.getUsername().isNullOrEmpty() && !appPreference?.getPassword().isNullOrEmpty()
     }
 
 }
